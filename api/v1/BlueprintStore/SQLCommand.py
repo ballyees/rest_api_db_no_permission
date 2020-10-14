@@ -4,8 +4,8 @@ class SQLCommand:
         return f"""SELECT * FROM users WHERE username like '{username}'"""
     
     @staticmethod
-    def getUserAll():
-        return f"""SELECT * FROM users"""
+    def getAllProducts():
+        return f"""SELECT * FROM products"""
         
     @staticmethod
     def insertUser(user, typeData='common'):

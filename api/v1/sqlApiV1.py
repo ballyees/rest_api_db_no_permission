@@ -4,7 +4,6 @@ from os.path import join, dirname, abspath
 class SqlApiV1:
     def __init__(self, DBName):
         self.__PathDB = join(dirname(abspath(__file__)), DBName)
-        # self.__PathDB = join('\\'.join(dirname(abspath(__file__)).split('\\')[:-1]), DBName)
         self.__connector = sqlite3.connect(self.__PathDB)
         self.__DBName = DBName
         self.__cur = self.__connector.cursor()

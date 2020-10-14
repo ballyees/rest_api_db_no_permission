@@ -10,9 +10,8 @@ class SqlApiStoreV1(SqlApiV1):
         self.__connect = self.getConnector()
         self.__cur = self.getCursor()
         
-    def getUser(self, username):
-        sql_cmd = SQLCommand.getUser(username)
-        rows = self.__cur.execute(sql_cmd)
+    def getAllProducts(self):
+        rows = self.__cur.execute(SQLCommand.getAllProducts())
         col = []
         for c in self.__cur.description:
             col.append(c[0])
@@ -29,4 +28,4 @@ class SqlApiStoreV1(SqlApiV1):
             self.__connector.commit()
             return {'Success': True}
 
-SqlApiV1Obj = SqlApiStoreV1('loginModel.db')
+SqlApiV1Obj = SqlApiStoreV1('classicmodels.sqlite')
