@@ -1,0 +1,23 @@
+table customers:
+        customerNumber, customerName, contactLastName, contactFirstName, phone, addressLine1, addressLine2, city, state, postalCode, country, salesRepEmployeeNumber, creditLimit
+
+table employees:
+        employeeNumber, lastName, firstName, extension, email, officeCode, reportsTo, jobTitle
+
+table offices:
+        officeCode, city, phone, addressLine1, addressLine2, state, country, postalCode, territory
+
+table orderdetails:
+        orderNumber, productCode, quantityOrdered, priceEach, orderLineNumber
+
+table orders:
+        orderNumber, orderDate, requiredDate, shippedDate, status, comments, customerNumber
+
+table payments:
+        customerNumber, checkNumber, paymentDate, amount
+
+table productlines:
+        productLine, textDescription, htmlDescription, image
+
+table products:
+        productCode, productName, productLine, productScale, productVendor, productDescription, quantityInStock, buyPrice, MSRP

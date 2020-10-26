@@ -9,14 +9,46 @@ class SqlApiStoreV1(SqlApiV1):
         SqlApiV1.__init__(self, DBName)
         self.__connect = self.getConnector()
         self.__cur = self.getCursor()
-        
+    
+    # --------------------------------------------------------------------------------------------------------------------------------
+    #                                                         Product
+    # --------------------------------------------------------------------------------------------------------------------------------
+    
     def getAllProducts(self):
         rows = self.__cur.execute(SQLCommand.getAllProducts())
         col = []
         for c in self.__cur.description:
             col.append(c[0])
         return [dict(zip(col, row)) for row in rows.fetchall()]
+
+    def getProduct(self, productCode):
+        rows = self.__cur.execute(SQLCommand.getProduct(productCode))
+        col = []
+        for c in self.__cur.description:
+            col.append(c[0])
+        return [dict(zip(col, row)) for row in rows.fetchall()]
+
+    def editProduct(self, data):
+        self.__cur.execute(SQLCommand.editProduct(data))
+        self.__connector.commit()
+        return {'Success': True}
     
+    def deleteProduct(self, productCode):
+        self.__cur.execute(SQLCommand.deleteProduct(productCode))
+        self.__connector.commit()
+        return {'Success': True}
+
+    # --------------------------------------------------------------------------------------------------------------------------------
+    #                                                         Customer
+    # --------------------------------------------------------------------------------------------------------------------------------
+    
+    def getAllCustomers(self):
+        rows = self.__cur.execute(SQLCommand.getAllCustomers())
+        col = []
+        for c in self.__cur.description:
+            col.append(c[0])
+        return [dict(zip(col, row)) for row in rows.fetchall()]
+
     def insertUser(self, data):
         if self.getUser(data['username']):
             return {'Success': False, 'code': 'we have username'}
