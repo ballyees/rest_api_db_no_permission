@@ -11,10 +11,9 @@ bp_v1_store = Blueprint('store_v1', url_prefix='/api/store', version="v1")
 async def close_connection(app, loop):
     await SqlApiV1Obj.close()
 
-@bp_v1_store.route('/', methods=["GET"])
-async def test(request):
-    return json({'data': 'testy'})
-
+# --------------------------------------------------------------------------------------------------------------------------------
+#                                                         Product
+# --------------------------------------------------------------------------------------------------------------------------------
 @bp_v1_store.route('/product', methods=["GET"])
 async def productAll(request):
     res = SqlApiV1Obj.getAllProducts()
@@ -33,6 +32,9 @@ async def product(request, productCode):
         res = SqlApiV1Obj.editProduct(productCode)
         return json({ConfigureAPI.keyResponseData: res})
 
+# --------------------------------------------------------------------------------------------------------------------------------
+#                                                         Customer
+# --------------------------------------------------------------------------------------------------------------------------------
 @bp_v1_store.route('/customer', methods=["GET"])
 async def customerAll(request):
     res = SqlApiV1Obj.getAllCustomers()
@@ -41,15 +43,40 @@ async def customerAll(request):
 @bp_v1_store.route('/customer/<customerNumber>', methods=["GET", "PUT", "DELETE"])
 async def customer(request, customerNumber):
     if request.method == "GET":
-        res = SqlApiV1Obj.getProduct(customerNumber)
+        res = SqlApiV1Obj.getCustomer(customerNumber)
         return json({ConfigureAPI.keyResponseData: res})
     elif request.method == "PUT":
         data = request.json
-        res = SqlApiV1Obj.editProduct(data)
+        res = SqlApiV1Obj.editCustomer(data)
         return json({ConfigureAPI.keyResponseData: res})
     elif request.method == "DELETE":
-        res = SqlApiV1Obj.editProduct(customerNumber)
+        res = SqlApiV1Obj.deleteCustomer(customerNumber)
         return json({ConfigureAPI.keyResponseData: res})
+
+# --------------------------------------------------------------------------------------------------------------------------------
+#                                                         Employee
+# --------------------------------------------------------------------------------------------------------------------------------
+@bp_v1_store.route('/employee', methods=["GET"])
+async def customerAll(request):
+    res = SqlApiV1Obj.getAllEmployees()
+    return json({ConfigureAPI.keyResponseData: res})
+
+@bp_v1_store.route('/employee/<employeeNumber>', methods=["GET", "PUT", "DELETE"])
+async def customer(request, employeeNumber):
+    if request.method == "GET":
+        res = SqlApiV1Obj.getEmployee(employeeNumber)
+        return json({ConfigureAPI.keyResponseData: res})
+    elif request.method == "PUT":
+        data = request.json
+        res = SqlApiV1Obj.editEmployee(data)
+        return json({ConfigureAPI.keyResponseData: res})
+    elif request.method == "DELETE":
+        res = SqlApiV1Obj.deleteEmployee(employeeNumber)
+        return json({ConfigureAPI.keyResponseData: res})
+
+# --------------------------------------------------------------------------------------------------------------------------------
+#                                                         Bill
+# --------------------------------------------------------------------------------------------------------------------------------
 
 @bp_v1_store.route('/<officeCode>', methods=["GET", "PUT"])
 async def userGET(request, officeCode):
