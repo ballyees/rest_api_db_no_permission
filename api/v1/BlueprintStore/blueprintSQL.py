@@ -14,10 +14,21 @@ async def close_connection(app, loop):
 # --------------------------------------------------------------------------------------------------------------------------------
 #                                                         Product
 # --------------------------------------------------------------------------------------------------------------------------------
-@bp_v1_store.route('/product', methods=["GET"])
+# @bp_v1_store.route('/', methods=["POST"])
+# async def test(request):
+#     data = request.json
+#     for k in data:
+#         print(type(data[k]), data[k])
+#     return json({ConfigureAPI.keyResponseData: True})
+
+@bp_v1_store.route('/product', methods=["GET", "POST"])
 async def productAll(request):
-    res = SqlApiV1Obj.getAllProducts()
-    return json({ConfigureAPI.keyResponseData: res})
+    if request.method == "GET":
+        res = SqlApiV1Obj.getAllProducts()
+        return json({ConfigureAPI.keyResponseData: res})
+    elif request.method == "POST":
+        res = SqlApiV1Obj.insertProduct(request.json)
+        return json({ConfigureAPI.keyResponseData: res})
 
 @bp_v1_store.route('/product/<productCode>', methods=["GET", "PUT", "DELETE"])
 async def product(request, productCode):
@@ -25,8 +36,7 @@ async def product(request, productCode):
         res = SqlApiV1Obj.getProduct(productCode)
         return json({ConfigureAPI.keyResponseData: res})
     elif request.method == "PUT":
-        data = request.json
-        res = SqlApiV1Obj.editProduct(data)
+        res = SqlApiV1Obj.editProduct(request.json)
         return json({ConfigureAPI.keyResponseData: res})
     elif request.method == "DELETE":
         res = SqlApiV1Obj.editProduct(productCode)
@@ -35,10 +45,14 @@ async def product(request, productCode):
 # --------------------------------------------------------------------------------------------------------------------------------
 #                                                         Customer
 # --------------------------------------------------------------------------------------------------------------------------------
-@bp_v1_store.route('/customer', methods=["GET"])
+@bp_v1_store.route('/customer', methods=["GET", "POST"])
 async def customerAll(request):
-    res = SqlApiV1Obj.getAllCustomers()
-    return json({ConfigureAPI.keyResponseData: res})
+    if request.method == "GET":
+        res = SqlApiV1Obj.getAllCustomers()
+        return json({ConfigureAPI.keyResponseData: res})
+    elif request.method == "POST":
+        res = SqlApiV1Obj.insertCustomer(request.json)
+        return json({ConfigureAPI.keyResponseData: res})
 
 @bp_v1_store.route('/customer/<customerNumber>', methods=["GET", "PUT", "DELETE"])
 async def customer(request, customerNumber):
@@ -46,8 +60,7 @@ async def customer(request, customerNumber):
         res = SqlApiV1Obj.getCustomer(customerNumber)
         return json({ConfigureAPI.keyResponseData: res})
     elif request.method == "PUT":
-        data = request.json
-        res = SqlApiV1Obj.editCustomer(data)
+        res = SqlApiV1Obj.editCustomer(request.json)
         return json({ConfigureAPI.keyResponseData: res})
     elif request.method == "DELETE":
         res = SqlApiV1Obj.deleteCustomer(customerNumber)
@@ -67,8 +80,7 @@ async def customer(request, employeeNumber):
         res = SqlApiV1Obj.getEmployee(employeeNumber)
         return json({ConfigureAPI.keyResponseData: res})
     elif request.method == "PUT":
-        data = request.json
-        res = SqlApiV1Obj.editEmployee(data)
+        res = SqlApiV1Obj.editEmployee(request.json)
         return json({ConfigureAPI.keyResponseData: res})
     elif request.method == "DELETE":
         res = SqlApiV1Obj.deleteEmployee(employeeNumber)

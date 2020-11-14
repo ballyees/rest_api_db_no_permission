@@ -36,9 +36,12 @@ class SqlApiStoreV1(SqlApiV1):
     def deleteProduct(self, productCode):
         self.__cur.execute(SQLCommand.deleteProduct(productCode))
         self.__connector.commit()
-        
         return {'Success': True}
-        
+    
+    def insertProduct(self, data):
+        self.__cur.execute(SQLCommand.insertProduct(data))
+        self.__connector.commit()
+        return {'Success': True}
 
     # --------------------------------------------------------------------------------------------------------------------------------
     #                                                         Customer
@@ -60,6 +63,11 @@ class SqlApiStoreV1(SqlApiV1):
 
     def editCustomer(self, data):
         self.__cur.execute(SQLCommand.editCustomer(data))
+        self.__connector.commit()
+        return {'Success': True}
+
+    def insertCustomer(self, data):
+        self.__cur.execute(SQLCommand.insertCustomer(data))
         self.__connector.commit()
         return {'Success': True}
 
