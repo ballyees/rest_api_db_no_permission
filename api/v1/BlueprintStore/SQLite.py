@@ -79,6 +79,11 @@ class SqlApiStoreV1(SqlApiV1):
     # --------------------------------------------------------------------------------------------------------------------------------
     #                                                         Employee
     # --------------------------------------------------------------------------------------------------------------------------------
+    
+    def insertEmployee(self, data):
+        self.__cur.execute(SQLCommand.insertEmployee(data))
+        self.__connector.commit()
+        return {'Success': True}
 
     def getAllEmployees(self):
         rows = self.__cur.execute(SQLCommand.getAllEmployees())
@@ -114,15 +119,47 @@ class SqlApiStoreV1(SqlApiV1):
     #                                                         Bill
     # --------------------------------------------------------------------------------------------------------------------------------
 
-    def insertUser(self, data):
-        if self.getUser(data['username']):
-            return {'Success': False, 'code': 'we have username'}
-        else:
-            user = User(data['username'], data['password'])
-            if not user.checkIsUser():
-                return {'Success': False, 'code': 'no username or password'}
-            self.__cur.execute(SQLCommand.insertUser(user.getUserJson(), data['type']))
-            self.__connector.commit()
-            return {'Success': True}
+    def getAllBill(self):
+        rows = self.__cur.execute(SQLCommand.getAllBill())
+        col = []
+        for c in self.__cur.description:
+            col.append(c[0])
+        return [dict(zip(col, row)) for row in rows.fetchall()]
+
+    def editBill(self, data):
+        self.__cur.execute(SQLCommand.editBill(data, self.__cur, self.__connector))
+        self.__connector.commit()
+        return {'Success': True}
+
+    def insertBill(self, data):
+        SQLCommand.insertBill(data, self.__cur, self.__connector)
+        return {'Success': True}
+
+    # --------------------------------------------------------------------------------------------------------------------------------
+    #                                                     Stock-in System
+    # --------------------------------------------------------------------------------------------------------------------------------
+
+    def getAllStockIn(self):
+        rows = self.__cur.execute(SQLCommand.getAllStockIn())
+        col = []
+        for c in self.__cur.description:
+            if c[0] in col:
+                col.append(c[0])
+            else:
+                col.append(c[0])
+        return [dict(zip(col, row)) for row in rows.fetchall()]
+
+    def insertStockIn(self, data):
+        SQLCommand.insertStockIn(data, self.__cur, self.__connector)
+        return {'Success': True}
+
+    # --------------------------------------------------------------------------------------------------------------------------------
+    #                                                         Promotion
+    # --------------------------------------------------------------------------------------------------------------------------------
+
+    def insertPromotion(self, data):
+        self.__cur.execute(SQLCommand.insertCustomer(data))
+        self.__connector.commit()
+        return {'Success': True}
 
 SqlApiV1Obj = SqlApiStoreV1('classicmodels.sqlite')

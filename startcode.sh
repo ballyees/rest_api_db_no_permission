@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source C:/ProgramData/Anaconda3/etc/profile.d/conda.sh
+source C:/Users/MSI-PS42-OEM/Anaconda3/etc/profile.d/conda.sh
 conda activate sanicAPI
 code .
 

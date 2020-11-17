@@ -39,7 +39,7 @@ async def product(request, productCode):
         res = SqlApiV1Obj.editProduct(request.json)
         return json({ConfigureAPI.keyResponseData: res})
     elif request.method == "DELETE":
-        res = SqlApiV1Obj.editProduct(productCode)
+        res = SqlApiV1Obj.deleteProduct(productCode)
         return json({ConfigureAPI.keyResponseData: res})
 
 # --------------------------------------------------------------------------------------------------------------------------------
@@ -69,13 +69,18 @@ async def customer(request, customerNumber):
 # --------------------------------------------------------------------------------------------------------------------------------
 #                                                         Employee
 # --------------------------------------------------------------------------------------------------------------------------------
-@bp_v1_store.route('/employee', methods=["GET"])
-async def customerAll(request):
-    res = SqlApiV1Obj.getAllEmployees()
-    return json({ConfigureAPI.keyResponseData: res})
+@bp_v1_store.route('/employee', methods=["GET", "POST"])
+async def employeeAll(request):
+    if request.method == "GET":
+        res = SqlApiV1Obj.getAllEmployees()
+        return json({ConfigureAPI.keyResponseData: res})
+    elif request.method == "POST":
+        res = SqlApiV1Obj.insertEmployee(request.json)
+        return json({ConfigureAPI.keyResponseData: res})
+
 
 @bp_v1_store.route('/employee/<employeeNumber>', methods=["GET", "PUT", "DELETE"])
-async def customer(request, employeeNumber):
+async def employee(request, employeeNumber):
     if request.method == "GET":
         res = SqlApiV1Obj.getEmployee(employeeNumber)
         return json({ConfigureAPI.keyResponseData: res})
@@ -90,23 +95,36 @@ async def customer(request, employeeNumber):
 #                                                         Bill
 # --------------------------------------------------------------------------------------------------------------------------------
 
-@bp_v1_store.route('/<officeCode>', methods=["GET", "PUT"])
-async def userGET(request, officeCode):
+@bp_v1_store.route('/bill', methods=["GET", "POST"])
+async def billAll(request):
     if request.method == "GET":
-        if not request.headers.get(ConfigureAPI.keyTokenHeader, None):
-            Logger.write(f'IP {request.socket} [no token]', 'request-data')
-            return json({'exception': 'Authentication Failed', 'code': 1, 'description': 'none token'}, status=401) 
-        elif TokenizerUser.checkTokenAndName(request.headers['token'], officeCode):
-            Logger.write(f'IP {request.socket} [{officeCode} query data]', 'request-data')
-            res = SqlApiV1Obj.getUser(officeCode)
-            del res[0]['salt']
-            return json({
-                "responseData": res
-            })
-        elif not TokenizerUser.checkToken(request.headers[ConfigureAPI.keyTokenHeader]):
-            Logger.write(f'IP {request.socket} [unknown token]', 'request-data')
-            return json({'exception': 'Authentication Failed', 'code': 2, 'description': 'wrong token'}, status=401)
-        else:
-            Logger.write(f'IP {request.socket[0]} [{officeCode} use unknown token]', 'request-data')
-            return json({'exception': 'Authentication Failed', 'code': 3, 'description': 'permission deined'}, status=401)
+        res = SqlApiV1Obj.getAllBill()
+        return json({ConfigureAPI.keyResponseData: res})
+    elif request.method == "POST":
+        res = SqlApiV1Obj.insertBill(request.json)
+        return json({ConfigureAPI.keyResponseData: res})
+
+@bp_v1_store.route('/bill/<orderNumber>', methods=["GET", "PUT"])
+async def billAll(request, orderNumber):
+    if request.method == "GET":
+        res = SqlApiV1Obj.getAllBill()
+        return json({ConfigureAPI.keyResponseData: res})
+    elif request.method == "PUT":
+        res = SqlApiV1Obj.editBill(request.json)
+        return json({ConfigureAPI.keyResponseData: res})
+
+# --------------------------------------------------------------------------------------------------------------------------------
+#                                                     Stock-in System
+# --------------------------------------------------------------------------------------------------------------------------------
+
+@bp_v1_store.route('/stock', methods=["GET", "POST"])
+async def stockInAll(request):
+    if request.method == "GET":
+        res = SqlApiV1Obj.getAllStockIn()
+        return json({ConfigureAPI.keyResponseData: res})
+    elif request.method == "POST":
+        res = SqlApiV1Obj.insertStockIn(request.json)
+        return json({ConfigureAPI.keyResponseData: res})
+
+
             

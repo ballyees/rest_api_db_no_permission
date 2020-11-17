@@ -1,4 +1,4 @@
 --------------- auto product code ---------------
 
-SELECT printf('%04d', ifnull(max(CAST(substr(productCode, 5) as INTEGER)) + 1, 1)) as maxValue
-FROM products WHERE productCode like 'S1110%'
+SELECT printf('%04d', ifnull(max(CAST(REPLACE(substr(productCode, 5), '_', '') as INTEGER)) + 1, 1)) as maxValue
+FROM products WHERE productCode like 'S700%'
